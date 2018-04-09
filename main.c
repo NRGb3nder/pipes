@@ -27,10 +27,10 @@ struct msgqueue_node_t
 };
 
 int start_interaction();
-int run_worker(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2]);
-int run_controller(int pipes[PROCESS_COUNT][PROCESS_COUNT][2]);
-int adjust_pipes(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2]);
-int fill_sets(fd_set *rfds, fd_set *wfds, int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2],
+int run_worker(int process_number, int pipes[][PROCESS_COUNT][2]);
+int run_controller(int pipes[][PROCESS_COUNT][2]);
+int adjust_pipes(int process_number, int pipes[][PROCESS_COUNT][2]);
+int fill_sets(fd_set *rfds, fd_set *wfds, int process_number, int pipes[][PROCESS_COUNT][2],
     struct msgqueue_node_t *receivers[PROCESS_COUNT]);
 void msgqueue_queue(struct msgqueue_node_t *head, char *msg);
 bool msgqueue_has_request(struct msgqueue_node_t *head);
@@ -85,7 +85,7 @@ int start_interaction()
     return result;
 }
 
-int run_worker(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
+int run_worker(int process_number, int pipes[][PROCESS_COUNT][2])
 {
     if (adjust_pipes(process_number, pipes) == -1) {
         return 1;
@@ -172,7 +172,7 @@ int run_worker(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
     return is_error;
 }
 
-int run_controller(int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
+int run_controller(int pipes[][PROCESS_COUNT][2])
 {
     if (adjust_pipes(0, pipes) == -1) {
         return 1;
@@ -212,7 +212,7 @@ int run_controller(int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
     return 0;
 }
 
-int adjust_pipes(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
+int adjust_pipes(int process_number, int pipes[][PROCESS_COUNT][2])
 {
     for (int i = 0; i < PROCESS_COUNT; i++) {
         for (int j = 0; j < PROCESS_COUNT; j++) {
@@ -238,7 +238,7 @@ int adjust_pipes(int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2])
     return 0;
 }
 
-int fill_sets(fd_set *rfds, fd_set *wfds, int process_number, int pipes[PROCESS_COUNT][PROCESS_COUNT][2],
+int fill_sets(fd_set *rfds, fd_set *wfds, int process_number, int pipes[][PROCESS_COUNT][2],
     struct msgqueue_node_t *receivers[PROCESS_COUNT])
 {
     int max_fd_value = -1;
