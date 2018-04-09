@@ -1,7 +1,7 @@
 # pipes
 OS and System Programming, lab #7
 
-<img src="https://github.com/NRGb3nder/pipes/blob/master/scheme.png" alt="Scheme" width="75%">
+<img src="https://github.com/NRGb3nder/pipes/blob/master/img/scheme.png" alt="Scheme" width="75%">
 
 Implement process interaction model according to the above scheme. It is required to use pipes to create worker-worker and controller-worker data exchange streams. A controller process should terminate all workers after interaction.
 
